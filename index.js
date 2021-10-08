@@ -11,6 +11,9 @@ var morgan = require('morgan')
 morgan.token('response-body', (req, res) => {return JSON.stringify(req.body)});
 app.use(morgan(':method :url :response-time :response-body'))
 
+let m = 0;
+m = m + 1;
+
 let persons = [
     { 
       id: 1,
