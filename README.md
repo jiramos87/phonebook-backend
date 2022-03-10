@@ -1,6 +1,8 @@
 Phonebook-app 
 =============
 
+You can open this app in https://rocky-cliffs-13747.herokuapp.com/ !!
+
 This readme file contains the presentation of the project and its development stages.  
 The Phonebook-app was created as an assignment project for the Fullstackopen course from the University of Helsinki.  The point of the assignment is to learn how to build a frontend, a backend and how to deploy the whole app to the internet.
 
