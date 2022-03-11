@@ -15,8 +15,9 @@
   "author": "Javier Ramos",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
     "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^6.2.5",
     "morgan": "^1.10.0",
     "morgan-body": "^2.6.6"
   },
