@@ -73,6 +73,7 @@ app.post('/api/persons', (request, response) => {
     }
 
     const name = request.body.name
+    const phone = request.body.number
     const person = new Person({
       name: name,
       phone: phone
