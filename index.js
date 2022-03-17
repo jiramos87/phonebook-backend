@@ -57,7 +57,7 @@ app.post('/api/persons', (request, response) => {
       phone: phone
     })
 
-    if(Person.find({ name: person.name }) != null) {
+    if(Person.find({ name: person.name }) != undefined) {
       Person.findOneAndUpdate({ name: person.name }, person, { new: true })
       .then(updatedPerson => {
         response.json(updatedPerson)
