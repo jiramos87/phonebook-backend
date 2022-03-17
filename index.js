@@ -57,17 +57,17 @@ app.post('/api/persons', (request, response) => {
       phone: phone
     })
 
-    if(Person.find({ name: person.name }) != undefined) {
-      Person.findOneAndUpdate({ name: person.name }, person, { new: true })
-      .then(updatedPerson => {
-        response.json(updatedPerson)
-      })
-      .catch(error => next(error))
-    } else {
-      person.save().then(savedPerson => {
-        response.json(savedPerson)
-      })
-    }
+    // if(Person.find({ name: person.name }) != undefined) {
+    //   Person.findOneAndUpdate({ name: person.name }, person, { new: true })
+    //   .then(updatedPerson => {
+    //     response.json(updatedPerson)
+    //   })
+    //   .catch(error => next(error))
+    // } else {
+    //   person.save().then(savedPerson => {
+    //     response.json(savedPerson)
+    //   })
+    // }
     person.save().then(savedPerson => {
       response.json(savedPerson)
     })
