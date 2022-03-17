@@ -68,6 +68,9 @@ app.post('/api/persons', (request, response) => {
         response.json(savedPerson)
       })
     }
+    person.save().then(savedPerson => {
+      response.json(savedPerson)
+    })
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
