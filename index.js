@@ -12,10 +12,11 @@ var morgan = require('morgan')
 morgan.token('response-body', (req, res) => {return JSON.stringify(req.body)});
 app.use(morgan(':method :url :response-time :response-body'))
 
-app.get('/api/persons', (request, response) => {
+app.get('/api/persons', (request, response, next) => {
   Person.find({}).then(persons => {
     response.json(persons)
   })
+  .catch(error => next(error))
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -35,7 +36,7 @@ app.get('/info', (request, response) => {
                    <p>${new Date()}</p>`)
 })
   
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
     const body = request.body
 
     if (!body.name) {
@@ -71,28 +72,36 @@ app.post('/api/persons', (request, response) => {
     person.save().then(savedPerson => {
       response.json(savedPerson)
     })
+    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
     .then(result => {
-      response.status(204).end()
+      if (result) {
+        Person.find({}).then(persons => {
+          response.json(persons)
+        })
+        .catch(error => next(error)) 
+      } else {
+        response.status(204).end()
+      }
     })
     .catch(error => next(error))
-})
 
 app.put('/api/persons/:id', (request, response, next) => {
   const body = request.body
-  const person = {
-    name: body.name,
-    phone: body.number
-  }
+  const { name, number } = request.body
 
-  Person.findOneAndUpdate({name: person.name}, person, { new: true })
-    .then(updatedPerson => {
-      response.json(updatedPerson)
-    })
-    .catch(error => next(error))
+  Person.findByIdAndUpdate(
+    request.params.id,
+    { name, number },
+    { new: true, runValidators: true, context: 'query' }, 
+  )
+  .then(updatedPerson => {
+    response.json(updatedPerson)
+  })
+  .catch(error => next(error))
 })
 
 const unknownEndpoint = (request, response) => {
@@ -106,7 +115,9 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
-  } 
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
+  }
 
   next(error)
 }
