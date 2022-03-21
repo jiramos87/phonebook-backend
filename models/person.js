@@ -12,18 +12,18 @@ mongoose.connect(url)
   })
 
 function validator (val) {
-  return val === /(\d{2}|d{3})-\d+/;
+  return val === /(\d{2}|\d{3})-\d+/;
 }
 
 const personSchema = new mongoose.Schema({
     name: {
       type: String,
-      minLength: [5, 'The name must be at least 5 numbers long'],
+      minLength: 5,
       required: true
     },
     phone: {
       type: String,
-      minLength: [8,'The number must be at least 8 numbers long'],
+      minLength: 8,
       required: true,
       validate: [validator, 'The number you entered should be formed of two parts that are separated by -, the first part has two or three numbers and the second part also consists of numbers']
     },
