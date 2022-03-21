@@ -11,10 +11,6 @@ mongoose.connect(url)
     console.log('error connecting to MongoDB:', error.message)
   })
 
-function validator (val) {
-  return val === /(\d{2}|\d{3})-\d+/;
-}
-
 const personSchema = new mongoose.Schema({
     name: {
       type: String,
@@ -25,7 +21,11 @@ const personSchema = new mongoose.Schema({
       type: String,
       minLength: 8,
       required: true,
-      validate: [validator, 'The number you entered should be formed of two parts that are separated by -, the first part has two or three numbers and the second part also consists of numbers']
+      validate: {
+        validator: function(v) {
+          return /(\d{2}|\d{3})-\d+/.test(v)
+        }, 
+        message: 'The number you entered should be formed of two parts that are separated by -, the first part has two or three numbers and the second part also consists of numbers'}
     },
 })
 
